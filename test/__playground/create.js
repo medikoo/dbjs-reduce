@@ -21,7 +21,7 @@ defineTestProperties = function (obj) {
 		},
 		regularComputed: {
 			type: db.String,
-			value: function () {}
+			value: function () { return this.regularValue + 'bar'; }
 		},
 		statsRegular: {
 			type: db.String,
@@ -43,12 +43,12 @@ defineTestProperties = function (obj) {
 		},
 		statsRegularComputed: {
 			type: db.String,
-			value: function () {},
+			value: function () { return this.regularValue + 'lorem'; },
 			statsBase: null
 		},
 		statsRegularComputedStatsValue: {
 			type: db.String,
-			value: function () {},
+			value: function () { return this.regularValue + 'ipsum'; },
 			statsBase: 'def'
 		},
 		statsMultiple: {
@@ -77,8 +77,8 @@ TypeC.defineProperties({
 defineTestProperties(TypeC.prototype);
 TypeC.prototype.defineProperties({
 	bridgeRegularValue: {
-		type: db.String,
-		value: 'foo'
+		type: db.Number,
+		value: 20
 	},
 	bridgeRegularComputed: {
 		type: db.String,

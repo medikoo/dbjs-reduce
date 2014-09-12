@@ -134,8 +134,8 @@ module.exports = function (t, a) {
 	a.h3("Demanded by extension");
 	desc = target.TypeC.prototype.$get('bridgeRegularValue');
 	a(desc.object, target.TypeC.prototype, "Owner");
-	a(desc._value_, 'foo', "Value");
-	a.deep(desc, { type: target.String }, "Data");
+	a(desc._value_, 20, "Value");
+	a.deep(desc, { type: target.Number }, "Data");
 
 	desc = target.TypeC.prototype.$get('bridgeRegularComputed');
 	a(desc.object, target.TypeC.prototype, "Owner");
