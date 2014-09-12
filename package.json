@@ -1,0 +1,29 @@
+{
+  "name": "dbjs-reduce",
+  "version": "0.0.0",
+  "description": "dbjs data reduction utility",
+  "author": "Mariusz Nowak <medyk@medikoo.com> (http://www.medikoo.com/)",
+  "keywords": [
+    "dbjs",
+    "reduce"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/medikoo/dbjs-reduce.git"
+  },
+  "dependencies": {
+    "dbjs": "git://github.com/medikoo/dbjs.git"
+  },
+  "devDependencies": {
+    "dbjs-ext": "git://github.com/medikoo/dbjs-ext.git",
+    "tad": "0.2.x",
+    "xlint": "~0.2.1",
+    "xlint-jslint-medikoo": "~0.1.1"
+  },
+  "scripts": {
+    "lint": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --no-cache --no-stream",
+    "lint-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --watch",
+    "test": "node node_modules/tad/bin/tad"
+  },
+  "license": "MIT"
+}
