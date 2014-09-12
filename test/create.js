@@ -11,6 +11,7 @@ module.exports = function (t, a) {
 		a.not(obj.$get('regular').object, obj);
 		a.not(obj.$get('regularValue').object.__id__, obj.__id__, "Value");
 		a.not(obj.$get('regularComputed').object, obj, "Computed");
+		a.not(obj.$get('multiple').object, obj, "Computed");
 
 		a.h3("Imported");
 		a.h4("Regular");

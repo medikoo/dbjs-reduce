@@ -51,6 +51,10 @@ defineTestProperties = function (obj) {
 			value: function () { return this.regularValue + 'ipsum'; },
 			statsBase: 'def'
 		},
+		multiple: {
+			type: db.Number,
+			multiple: true
+		},
 		statsMultiple: {
 			type: db.Number,
 			multiple: true,
