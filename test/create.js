@@ -106,7 +106,7 @@ module.exports = function (t, a) {
 	a.h3("Computed deep");
 	desc = targetUser.nestedBridgeStats.$get('bridgeRegularComputed');
 	a(desc.object, targetUser.nestedBridgeStats, "Owner");
-	a(desc._value_, false, "Value");
+	a(desc._value_, 'bla', "Value");
 	a.deep(desc, {}, "Data");
 
 	a.h1("Types");

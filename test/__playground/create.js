@@ -94,7 +94,7 @@ TypeC.prototype.defineProperties({
 	},
 	bridgeRegularComputed: {
 		type: db.String,
-		value: function () {}
+		value: function () { return this.regularValue + this.statsRegular; }
 	}
 });
 TypeD = TypeC.extend('TypeD');
@@ -191,6 +191,6 @@ user.nestedBridgeStats.$statsRegular.required = true;
 user.nestedBridgeStats.$bridgeRegularValue.statsBase = null;
 user.nestedBridgeStats.$bridgeRegularValue.type = UsDollar;
 
-user.nestedBridgeStats.$bridgeRegularComputed.statsBase = false;
+user.nestedBridgeStats.$bridgeRegularComputed.statsBase = 'bla';
 
 module.exports = db;
