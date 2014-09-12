@@ -59,6 +59,14 @@ defineTestProperties = function (obj) {
 			type: db.Number,
 			multiple: true,
 			statsBase: 'bar'
+		},
+		statsMultipleComputed: {
+			type: db.String,
+			multiple: true,
+			value: function () {
+				return [this.regularValue, this.regularValue + 'raz', this.statsRegular];
+			},
+			statsBase: null
 		}
 	});
 };
