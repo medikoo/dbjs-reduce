@@ -12,6 +12,7 @@
     "url": "git://github.com/medikoo/dbjs-reduce.git"
   },
   "dependencies": {
+    "es5-ext": "~0.10.4",
     "dbjs": "git://github.com/medikoo/dbjs.git"
   },
   "devDependencies": {
