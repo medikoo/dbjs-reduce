@@ -10,6 +10,11 @@ var Database   = require('dbjs')
 
 user = db.Object.extend('User').prototype;
 
+TypeA = db.Object.extend('TypeA');
+TypeB = TypeA.extend('TypeB');
+TypeC = db.Object.extend('TypeC');
+TypeD = TypeC.extend('TypeD');
+
 defineTestProperties = function (obj) {
 	return obj.defineProperties({
 		regular: {
@@ -67,15 +72,21 @@ defineTestProperties = function (obj) {
 				return [this.regularValue, this.regularValue + 'raz', this.statsRegular];
 			},
 			statsBase: null
+		},
+		multipleObj: {
+			type: TypeB,
+			multiple: true
+		},
+		statsMultipleObj: {
+			type: TypeD,
+			multiple: true,
+			statsBase: 'foo'
 		}
 	});
 };
 
-TypeA = db.Object.extend('TypeA');
 defineTestProperties(TypeA.prototype);
-TypeB = TypeA.extend('TypeB');
 
-TypeC = db.Object.extend('TypeC');
 TypeC.defineProperties({
 	regularValue: {
 		type: db.String,
@@ -97,19 +108,9 @@ TypeC.prototype.defineProperties({
 		value: function () { return this.regularValue + this.statsRegular; }
 	}
 });
-TypeD = TypeC.extend('TypeD');
 
 defineTestProperties(user);
 user.defineProperties({
-	multipleObj: {
-		type: TypeB,
-		multiple: true
-	},
-	statsMultipleObj: {
-		type: TypeD,
-		multiple: true,
-		statsBase: 'foo'
-	},
 	nested: {
 		type: db.Object,
 		nested: true
