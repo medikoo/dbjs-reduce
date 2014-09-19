@@ -30,7 +30,7 @@ db.Object.extend('User', {
 });
 
 var reducedDb = createReduced(db, 'reduceBase');
-// Contains only definition for User.prototype.fullName, but with no computed getter defined
+// Contains only definition for User.prototype.fullName, but with no getter defined
 ```
 
 We can copy both computed and static properties. Value assigned to `descriptor[propertyName]` (`reduceBase` in above example) is in effect as _default value_ only if it's not `null` and only in case of computed properties, otherwise it's ignored (while definition of property remains copied).
@@ -39,7 +39,7 @@ We can copy both computed and static properties. Value assigned to `descriptor[p
 
 Initializes sychronization setup between two database instances.
 
-Following above example:
+Continuation of first example:
 
 ```javascript
 var syncReduced = require('dbjs-reduce/sync');
