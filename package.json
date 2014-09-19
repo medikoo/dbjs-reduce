@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "es5-ext": "~0.10.4",
-    "dbjs": "git://github.com/medikoo/dbjs.git"
+    "d": "~0.1.1",
+    "dbjs": "git://github.com/medikoo/dbjs.git",
+    "time-uuid": "~0.2.1"
   },
   "devDependencies": {
     "dbjs-ext": "git://github.com/medikoo/dbjs-ext.git",
