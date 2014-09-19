@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "es5-ext": "~0.10.4",
+    "es6-set": "0.1",
     "d": "~0.1.1",
     "dbjs": "git://github.com/medikoo/dbjs.git",
     "time-uuid": "~0.2.1"
