@@ -13,7 +13,6 @@ It takes sourceDb, and copies also necessary model into result database. Which p
 e.g.:
 
 ```javascript
-
 var Database      = require('dbjs');
 var createReduced = require('dbjs-reduce/create');
 
