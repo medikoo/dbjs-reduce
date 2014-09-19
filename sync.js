@@ -248,6 +248,7 @@ Object.defineProperties(SyncMaster.prototype, assign({
 			observable.off('change', isSet(observable) ? this.onSetChangeEvent : this.onChangeEvent);
 		}, this);
 		clear.call(this.observed);
+		this.initialized = false;
 	}),
 	remove: d(function () {
 		this.destroy();
