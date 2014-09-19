@@ -15,6 +15,7 @@ var clear           = require('es5-ext/array/#/clear')
   , serializeKey    = require('dbjs/_setup/serialize/key')
 
   , create = Object.create, getPrototypeOf = Object.getPrototypeOf
+  , hasOwnProperty = Object.prototype.hasOwnProperty
   , SyncRoot, SyncMaster, propagateComputedItem
   , resolveTargetValue, resolveTargetObject;
 
@@ -101,7 +102,9 @@ Object.defineProperties(SyncMaster.prototype, assign({
 				// Static
 				this.namesToSync[desc.__valueId__] = true;
 				if (desc.multiple) {
-					object._forEachOwnItem_(this.syncObjectDirectly, this);
+					if (!object.hasOwnProperty('__multiples__')) continue;
+					if (!hasOwnProperty.call(object.__multiples__, sKey)) continue;
+					forEach(object.__multiples__[sKey], this.syncObjectDirectly, this);
 					continue;
 				}
 				if (desc.object !== object) continue;
