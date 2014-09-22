@@ -1,7 +1,7 @@
 # dbjs-reduce
 ## Data reduction utility for [dbjs](https://github.com/medikoo/dbjs)
 
-Reduces one _complete_ database into more _compact_ reduced version. In practice it means propagation of just some computed property values into other database instance. It can be helpful when we want to process large overviews of data, but we're only interested in some summaries and not atomic values.
+Reduces one _complete_ database into more _compact_ reduced version. In practice it usually means propagation of some computed property values into other database instance. It can be helpful when we want to process large overviews of data, but we're only interested in some summaries and not atomic values.
 
 ### API
 
