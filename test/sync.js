@@ -5,7 +5,7 @@ var aFrom    = require('es5-ext/array/from')
   , createDb = require('../create');
 
 module.exports = function (t, a) {
-	var target = createDb(source, 'statsBase'), User = source.User
+	var target = createDb(source, 'reduceBase'), User = source.User
 	  , sUserA, tUserA, dObj1, dObj2, dObj3, handler, toPlainEvent, setProps, testProps, stamp;
 
 	toPlainEvent = function (event, value, id) {
@@ -43,7 +43,7 @@ module.exports = function (t, a) {
 	sUserA.nestedBridgeStats.bridgeRegularValue = 40;
 
 	setProps(dObj1);
-	handler = t(target, 'statsBase');
+	handler = t(target, 'reduceBase');
 	handler(sUserA);
 
 	testProps = function (tObj, sObj) {

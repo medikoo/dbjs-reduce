@@ -30,31 +30,31 @@ defineTestProperties = function (obj) {
 		},
 		statsRegular: {
 			type: db.String,
-			statsBase: null
+			reduceBase: null
 		},
 		statsRegularStatsValue: {
 			type: db.String,
-			statsBase: 'elo'
+			reduceBase: 'elo'
 		},
 		statsRegularValue: {
 			type: db.String,
 			value: 'foo',
-			statsBase: null
+			reduceBase: null
 		},
 		statsRegularValueStatsValue: {
 			type: StringLine,
 			value: 'bar',
-			statsBase: 'foo'
+			reduceBase: 'foo'
 		},
 		statsRegularComputed: {
 			type: db.String,
 			value: function () { return this.regularValue + 'lorem'; },
-			statsBase: null
+			reduceBase: null
 		},
 		statsRegularComputedStatsValue: {
 			type: db.String,
 			value: function () { return this.regularValue + 'ipsum'; },
-			statsBase: 'def'
+			reduceBase: 'def'
 		},
 		multiple: {
 			type: db.Number,
@@ -63,7 +63,7 @@ defineTestProperties = function (obj) {
 		statsMultiple: {
 			type: db.Number,
 			multiple: true,
-			statsBase: 'bar'
+			reduceBase: 'bar'
 		},
 		statsMultipleComputed: {
 			type: db.String,
@@ -71,7 +71,7 @@ defineTestProperties = function (obj) {
 			value: function () {
 				return [this.regularValue, this.regularValue + 'raz', this.statsRegular];
 			},
-			statsBase: null
+			reduceBase: null
 		},
 		multipleObj: {
 			type: TypeB,
@@ -80,7 +80,7 @@ defineTestProperties = function (obj) {
 		statsMultipleObj: {
 			type: TypeD,
 			multiple: true,
-			statsBase: 'foo'
+			reduceBase: 'foo'
 		}
 	});
 };
@@ -94,7 +94,7 @@ TypeC.defineProperties({
 	},
 	statsRegular: {
 		type: db.String,
-		statsBase: null
+		reduceBase: null
 	}
 });
 defineTestProperties(TypeC.prototype);
@@ -118,7 +118,7 @@ user.defineProperties({
 	nestedStatsBase: {
 		type: db.Object,
 		nested: true,
-		statsBase: null
+		reduceBase: null
 	},
 	nestedRich: {
 		type: db.Object,
@@ -135,7 +135,7 @@ user.defineProperties({
 	statsNestedStatsBase: {
 		type: db.Object,
 		nested: true,
-		statsBase: null
+		reduceBase: null
 	},
 	statsNestedDeep: {
 		type: db.Object,
@@ -153,7 +153,7 @@ user.defineProperties({
 
 defineTestProperties(user.statsNested);
 defineTestProperties(user.statsNestedStatsBase);
-user.statsNestedEmpty.define('emptyStats', { statsBase: null });
+user.statsNestedEmpty.define('emptyStats', { reduceBase: null });
 user.nestedRich.defineProperties({
 	regular: {
 		type: db.String
@@ -189,9 +189,9 @@ defineTestProperties(user.statsNestedDeep.statsNested);
 user.nestedBridge.$statsRegular.required = true;
 user.nestedBridgeStats.$statsRegular.required = true;
 
-user.nestedBridgeStats.$bridgeRegularValue.statsBase = null;
+user.nestedBridgeStats.$bridgeRegularValue.reduceBase = null;
 user.nestedBridgeStats.$bridgeRegularValue.type = UsDollar;
 
-user.nestedBridgeStats.$bridgeRegularComputed.statsBase = 'bla';
+user.nestedBridgeStats.$bridgeRegularComputed.reduceBase = 'bla';
 
 module.exports = db;

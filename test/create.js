@@ -3,7 +3,7 @@
 var source = require('./__playground/create');
 
 module.exports = function (t, a) {
-	var target = t(source, 'statsBase'), targetUser = target.User.prototype, desc, testObject;
+	var target = t(source, 'reduceBase'), targetUser = target.User.prototype, desc, testObject;
 
 	testObject = function (obj) {
 		var desc;
