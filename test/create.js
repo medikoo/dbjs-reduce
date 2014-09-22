@@ -1,9 +1,12 @@
 'use strict';
 
-var source = require('./__playground/create');
+var Database = require('dbjs')
+  , source   = require('./__playground/create');
 
 module.exports = function (t, a) {
 	var target = t(source, 'reduceBase'), targetUser = target.User.prototype, desc, testObject;
+
+	t(new Database(), 'test'); // test empty database
 
 	testObject = function (obj) {
 		var desc;
