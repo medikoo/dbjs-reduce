@@ -100,12 +100,12 @@ migrateProperties = function (source, targetDatabase, propertyName) {
 };
 
 module.exports = function (mainDb, propertyName) {
-	var statsDb;
+	var reducedDb;
 	validDbjs(mainDb);
 	propertyName = String(value(propertyName));
-	statsDb = new Database();
-	statsDb._done_ = create(null);
-	mainDb.Object.extensions.forEach(function (Type) { migrateType(Type, statsDb, propertyName); });
-	delete statsDb._done_;
-	return statsDb;
+	reducedDb = new Database();
+	reducedDb._done_ = create(null);
+	mainDb.Object.extensions.forEach(function (Type) { migrateType(Type, reducedDb, propertyName); });
+	delete reducedDb._done_;
+	return reducedDb;
 };
