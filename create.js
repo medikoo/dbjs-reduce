@@ -66,6 +66,7 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 		new DbjsEvent(targetDatabase.objects.unserialize(subDesc.__id__), value,
 			(sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
 	});
+	if (sourceDesc.nested || sourceDesc.multiple) return hasInformation;
 	value = sourceDesc._value_;
 	if ((sourceDesc.master instanceof sourceDesc.database.Object) && isGetter(value)) {
 		if (!sourceDesc.hasOwnProperty(propertyName)) return hasInformation;
