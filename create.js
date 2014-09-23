@@ -67,7 +67,7 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 			(sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
 	});
 	if (sourceDesc._reverse_ || sourceDesc.nested || sourceDesc.multiple) return hasInformation;
-	value = sourceDesc._value_;
+	value = sourceDesc._resolveValueValue_();
 	if ((sourceDesc.master instanceof sourceDesc.database.Object) && isGetter(value)) {
 		if (!sourceDesc.hasOwnProperty(propertyName) || !sourceDesc[propertyName]) {
 			return hasInformation;
