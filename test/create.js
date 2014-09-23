@@ -44,7 +44,7 @@ module.exports = function (t, a) {
 		a.h4("Regular Computed");
 		desc = obj.$get('statsRegularComputed');
 		a(desc.object, obj, "Owner");
-		a(desc._value_, undefined, "Value");
+		a(desc._value_, null, "Value");
 		a.deep(desc, { type: target.String }, "Data");
 
 		a.h4("Regular Computed Stats Value");

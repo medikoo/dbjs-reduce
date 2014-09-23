@@ -195,7 +195,6 @@ Object.defineProperties(SyncMaster.prototype, assign({
 		  , target = targetObject._get_(observable.__sKey__)
 		  , stamp, targetLastEvent;
 		if (source === target) return;
-		if ((target == null) && (source == null)) return;
 		if (source && source.hasOwnProperty('__id__')) this.syncExternal(observable.dbId, source);
 		stamp = (event && event.stamp) || genStamp();
 		targetLastEvent = targetObject._getOwnDescriptor_(observable.__sKey__)._lastOwnEvent_;
