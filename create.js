@@ -69,8 +69,10 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 	if (sourceDesc.nested || sourceDesc.multiple) return hasInformation;
 	value = sourceDesc._value_;
 	if ((sourceDesc.master instanceof sourceDesc.database.Object) && isGetter(value)) {
-		if (!sourceDesc.hasOwnProperty(propertyName)) return hasInformation;
-		value = sourceDesc[propertyName];
+		if (!sourceDesc.hasOwnProperty(propertyName) || !sourceDesc[propertyName]) {
+			return hasInformation;
+		}
+		value = sourceDesc.object._get_(sourceDesc._sKey_);
 	} else if (!sourceDesc.hasOwnProperty('_value_') || (value === undefined)) {
 		return hasInformation;
 	}

@@ -30,7 +30,7 @@ defineTestProperties = function (obj) {
 		},
 		statsRegular: {
 			type: db.String,
-			reduceBase: null
+			reduceBase: true
 		},
 		statsRegularStatsValue: {
 			type: db.String,
@@ -39,7 +39,7 @@ defineTestProperties = function (obj) {
 		statsRegularValue: {
 			type: db.String,
 			value: 'foo',
-			reduceBase: null
+			reduceBase: true
 		},
 		statsRegularValueStatsValue: {
 			type: StringLine,
@@ -49,7 +49,7 @@ defineTestProperties = function (obj) {
 		statsRegularComputed: {
 			type: db.String,
 			value: function () { return this.regularValue + 'lorem'; },
-			reduceBase: null
+			reduceBase: true
 		},
 		statsRegularComputedStatsValue: {
 			type: db.String,
@@ -71,7 +71,7 @@ defineTestProperties = function (obj) {
 			value: function () {
 				return [this.regularValue, this.regularValue + 'raz', this.statsRegular];
 			},
-			reduceBase: null
+			reduceBase: true
 		},
 		multipleObj: {
 			type: TypeB,
@@ -94,7 +94,7 @@ TypeC.defineProperties({
 	},
 	statsRegular: {
 		type: db.String,
-		reduceBase: null
+		reduceBase: true
 	}
 });
 defineTestProperties(TypeC.prototype);
@@ -118,7 +118,7 @@ user.defineProperties({
 	nestedStatsBase: {
 		type: db.Object,
 		nested: true,
-		reduceBase: null
+		reduceBase: true
 	},
 	nestedRich: {
 		type: db.Object,
@@ -135,7 +135,7 @@ user.defineProperties({
 	statsNestedStatsBase: {
 		type: db.Object,
 		nested: true,
-		reduceBase: null
+		reduceBase: true
 	},
 	statsNestedDeep: {
 		type: db.Object,
@@ -153,7 +153,7 @@ user.defineProperties({
 
 defineTestProperties(user.statsNested);
 defineTestProperties(user.statsNestedStatsBase);
-user.statsNestedEmpty.define('emptyStats', { reduceBase: null });
+user.statsNestedEmpty.define('emptyStats', { reduceBase: true });
 user.nestedRich.defineProperties({
 	regular: {
 		type: db.String
@@ -189,7 +189,7 @@ defineTestProperties(user.statsNestedDeep.statsNested);
 user.nestedBridge.$statsRegular.required = true;
 user.nestedBridgeStats.$statsRegular.required = true;
 
-user.nestedBridgeStats.$bridgeRegularValue.reduceBase = null;
+user.nestedBridgeStats.$bridgeRegularValue.reduceBase = true;
 user.nestedBridgeStats.$bridgeRegularValue.type = UsDollar;
 
 user.nestedBridgeStats.$bridgeRegularComputed.reduceBase = 'bla';

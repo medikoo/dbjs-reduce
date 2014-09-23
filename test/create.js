@@ -44,13 +44,13 @@ module.exports = function (t, a) {
 		a.h4("Regular Computed");
 		desc = obj.$get('statsRegularComputed');
 		a(desc.object, obj, "Owner");
-		a(desc._value_, null, "Value");
+		a(desc._value_, 'foolorem', "Value");
 		a.deep(desc, { type: target.String }, "Data");
 
 		a.h4("Regular Computed Stats Value");
 		desc = obj.$get('statsRegularComputedStatsValue');
 		a(desc.object, obj, "Owner");
-		a(desc.hasOwnProperty('_value_') && desc._value_, 'def', "Value");
+		a(desc.hasOwnProperty('_value_') && desc._value_, 'fooipsum', "Value");
 		a.deep(desc, { type: target.String }, "Data");
 
 		a.h4("Multiple");
@@ -109,7 +109,7 @@ module.exports = function (t, a) {
 	a.h3("Computed deep");
 	desc = targetUser.nestedBridgeStats.$get('bridgeRegularComputed');
 	a(desc.object, targetUser.nestedBridgeStats, "Owner");
-	a(desc._value_, 'bla', "Value");
+	a(desc._value_, 'fooundefined', "Value");
 	a.deep(desc, {}, "Data");
 
 	a.h1("Types");
