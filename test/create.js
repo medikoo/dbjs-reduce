@@ -1,6 +1,7 @@
 'use strict';
 
-var Database = require('dbjs')
+var aFrom    = require('es5-ext/array/from')
+  , Database = require('dbjs')
   , source   = require('./__playground/create');
 
 module.exports = function (t, a) {
@@ -58,6 +59,13 @@ module.exports = function (t, a) {
 		a(desc.object, obj, "Owner");
 		a(desc.hasOwnProperty('_value_') && desc._value_, undefined, "Value");
 		a.deep(desc, { type: target.Number, multiple: true }, "Data");
+
+		a.h4("Multiple computed");
+		desc = obj.$get('statsMultipleComputed');
+		a(desc.object, obj, "Owner");
+		a(desc.hasOwnProperty('_value_') && desc._value_, undefined, "Desc Value");
+		a.deep(desc, { type: target.String, multiple: true }, "Data");
+		a.deep(aFrom(obj.statsMultipleComputed), ['foo', 'fooraz'], "Value");
 	};
 
 	a.h1("Direct properties");

@@ -28,8 +28,9 @@ resolveTargetValue = function (db, objectId, sKey) {
 	return resolveTargetObject(db, objectId)._get_(sKey);
 };
 propagateComputedItem = function (stamp, baseId, value, key) {
-	new DbjsEvent(this.base.db.objects.unserialize(baseId + '*' + serializeKey(key)), value,
-		stamp); //jslint: ignore
+	var item = this.base.db.objects.unserialize(baseId + '*' + serializeKey(key));
+	if ((value === undefined) && getPrototypeOf(item)._value_) value = false;
+	new DbjsEvent(item, value, stamp); //jslint: ignore
 };
 
 SyncRoot = function (db, propertyName) {

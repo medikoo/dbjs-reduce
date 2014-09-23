@@ -68,19 +68,29 @@ module.exports = function (t, a) {
 			toPlainEvent(sObj.statsMultiple.$get(5)._lastOwnEvent_));
 
 		a.deep(aFrom(tObj.statsMultipleComputed), ['marko', 'markoraz', 'mienio']);
+		a.deep(toPlainEvent(tObj.statsMultipleComputed.$get('foo')._lastOwnEvent_), {
+			object: tObj.statsMultipleComputed.$get('foo').__id__,
+			stamp: sObj.$statsRegular._lastOwnEvent_.stamp,
+			value: false
+		});
+		a.deep(toPlainEvent(tObj.statsMultipleComputed.$get('fooraz')._lastOwnEvent_), {
+			object: tObj.statsMultipleComputed.$get('fooraz').__id__,
+			stamp: sObj.$statsRegular._lastOwnEvent_.stamp + 1,
+			value: false
+		});
 		a.deep(toPlainEvent(tObj.statsMultipleComputed.$get('marko')._lastOwnEvent_), {
 			object: tObj.statsMultipleComputed.$get('marko').__id__,
-			stamp: sObj.$statsRegular._lastOwnEvent_.stamp,
+			stamp: sObj.$statsRegular._lastOwnEvent_.stamp + 2,
 			value: true
 		});
 		a.deep(toPlainEvent(tObj.statsMultipleComputed.$get('markoraz')._lastOwnEvent_), {
 			object: tObj.statsMultipleComputed.$get('markoraz').__id__,
-			stamp: sObj.$statsRegular._lastOwnEvent_.stamp + 1,
+			stamp: sObj.$statsRegular._lastOwnEvent_.stamp + 3,
 			value: true
 		});
 		a.deep(toPlainEvent(tObj.statsMultipleComputed.$get('mienio')._lastOwnEvent_), {
 			object: tObj.statsMultipleComputed.$get('mienio').__id__,
-			stamp: sObj.$statsRegular._lastOwnEvent_.stamp + 2,
+			stamp: sObj.$statsRegular._lastOwnEvent_.stamp + 4,
 			value: true
 		});
 	};
