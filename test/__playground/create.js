@@ -95,6 +95,11 @@ TypeC.defineProperties({
 	statsRegular: {
 		type: db.String,
 		reduceBase: true
+	},
+	multiple: {
+		type: db.String,
+		multiple: true,
+		value: ['foo', 'bar']
 	}
 });
 defineTestProperties(TypeC.prototype);

@@ -141,6 +141,12 @@ module.exports = function (t, a) {
 	a(desc._value_, undefined, "Value");
 	a.deep(desc, { type: target.String }, "Data");
 
+	a.h3("Multiple");
+	desc = target.TypeC.$get('multiple');
+	a(desc.object.__id__, target.TypeC.__id__, "Owner");
+	a.deep(desc, { type: target.String, multiple: true }, "Data");
+	a.deep(aFrom(target.TypeC.multiple), ['foo', 'bar'], "Value");
+
 	a.h2("Prototype properties");
 	testObject(target.TypeC.prototype);
 	a.h3("Demanded by extension");

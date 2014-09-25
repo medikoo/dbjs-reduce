@@ -1,6 +1,7 @@
 'use strict';
 
-var value        = require('es5-ext/object/valid-value')
+var forEach      = require('es5-ext/object/for-each')
+  , value        = require('es5-ext/object/valid-value')
   , genStamp     = require('time-uuid/time')
   , Database     = require('dbjs')
   , DbjsEvent    = require('dbjs/_setup/event')
@@ -9,6 +10,7 @@ var value        = require('es5-ext/object/valid-value')
   , serializeKey = require('dbjs/_setup/serialize/key')
 
   , create = Object.create, getPrototypeOf = Object.getPrototypeOf
+  , hasOwnProperty = Object.prototype.hasOwnProperty
   , migrateType, migrateObject, migrateProperty, migrateProperties;
 
 migrateType = function (type, targetDatabase, propertyName) {
@@ -70,25 +72,44 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 	});
 	if (sourceDesc._reverse_ || sourceDesc.nested) return hasInformation;
 	value = sourceDesc._resolveValueValue_();
-	if ((sourceDesc.master instanceof sourceDesc.database.Object) && isGetter(value)) {
-		if (!sourceDesc.hasOwnProperty(propertyName) || !sourceDesc[propertyName]) {
-			return hasInformation;
-		}
-		value = sourceDesc.object._get_(sourceDesc._sKey_);
-		if (sourceDesc.multiple) {
-			if (!value.size) return hasInformation;
-			sourceEvent = sourceDesc.object._getPropertyLastEvent_(sourceDesc._sKey_);
-			stamp = sourceEvent ? sourceEvent.stamp : genStamp();
-			value.forEach(function (value) {
-				new DbjsEvent(targetDatabase.objects.unserialize(sourceDesc.__valueId__ + '*' +
-					serializeKey(value)), true, stamp++); //jslint: ignore
-			});
+	if (isGetter(value)) {
+		if (sourceDesc.master instanceof sourceDesc.database.Object) {
+			if (!sourceDesc.hasOwnProperty(propertyName) || !sourceDesc[propertyName]) {
+				return hasInformation;
+			}
+			value = sourceDesc.object._get_(sourceDesc._sKey_);
+			if (sourceDesc.multiple) {
+				if (!value.size) return hasInformation;
+				sourceEvent = sourceDesc.object._getPropertyLastEvent_(sourceDesc._sKey_);
+				stamp = sourceEvent ? sourceEvent.stamp : genStamp();
+				value.forEach(function (value) {
+					new DbjsEvent(targetDatabase.objects.unserialize(sourceDesc.__valueId__ + '*' +
+						serializeKey(value)), true, stamp++); //jslint: ignore
+				});
+				return true;
+			}
+			sourceEvent = sourceDesc._lastOwnEvent_;
+			new DbjsEvent(targetDatabase.objects.unserialize(sourceDesc.__valueId__), value,
+				(sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
 			return true;
 		}
-	} else if (sourceDesc.multiple || !sourceDesc.hasOwnProperty('_value_') ||
-			(value === undefined)) {
+	} else if (sourceDesc.multiple) {
+		if (!sourceDesc.object.hasOwnProperty('__multiples__')) return hasInformation;
+		if (!hasOwnProperty.call(sourceDesc.object.__multiples__, sourceDesc._sKey_)) {
+			return hasInformation;
+		}
+		forEach(sourceDesc.object.__multiples__[sourceDesc._sKey_], function (item) {
+			var sourceEvent;
+			if (!item.hasOwnProperty('_value_')) return;
+			if (item._value_ === undefined) return;
+			hasInformation = true;
+			sourceEvent = item._lastOwnEvent_;
+			new DbjsEvent(targetDatabase.objects.unserialize(item.__id__), item._value_,
+				(sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
+		}, this);
 		return hasInformation;
 	}
+	if (!sourceDesc.hasOwnProperty('_value_') || (value === undefined)) return hasInformation;
 	sourceEvent = sourceDesc._lastOwnEvent_;
 	new DbjsEvent(targetDatabase.objects.unserialize(sourceDesc.__valueId__), value,
 		(sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
