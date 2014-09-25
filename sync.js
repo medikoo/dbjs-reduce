@@ -101,7 +101,7 @@ Object.defineProperties(SyncMaster.prototype, assign({
 			if (!desc._resolveValueGetter_()) {
 
 				// Static
-				this.namesToSync[desc.__valueId__] = true;
+				this.namesToSync[object.__id__ + '/' + sKey] = true;
 				if (desc.multiple) {
 					if (!object.hasOwnProperty('__multiples__')) continue;
 					if (!hasOwnProperty.call(object.__multiples__, sKey)) continue;

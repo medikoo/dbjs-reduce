@@ -115,6 +115,12 @@ module.exports = function (t, a) {
 	a(tUserA.nestedBridgeStats.bridgeRegularValue, 40);
 	a(tUserA.nestedBridgeStats.bridgeRegularComputed, 'markomienio');
 
+	a.h1("Static changes");
+	sUserA.statsRegularValue = 'mano';
+	a(tUserA.statsRegularValue, 'mano');
+	a.deep(toPlainEvent(tUserA.$statsRegularValue._lastOwnEvent_),
+		toPlainEvent(sUserA.$statsRegularValue._lastOwnEvent_));
+
 	a.h1("Computed changes");
 	sUserA.regularValue = 'ilo';
 	a(tUserA.statsRegularComputed, 'ilolorem');
