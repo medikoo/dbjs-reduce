@@ -129,6 +129,8 @@ module.exports = function (t, a) {
 	a(target.Currency.__id__, 'Currency', "Interim type");
 	a(target.UsDollar.__id__, 'UsDollar', "Parent type");
 	a(target.TypeD.__id__, 'TypeD', "TypeD");
+	a(target.PTypeA.__id__, 'PTypeA', "PTypeA");
+	a(target.PTypeC.__id__, 'PTypeC', "PTypeC");
 
 	a.h2("Constructor properties");
 	desc = target.TypeC.$get('regularValue');
@@ -144,7 +146,7 @@ module.exports = function (t, a) {
 	a.h3("Multiple");
 	desc = target.TypeC.$get('multiple');
 	a(desc.object.__id__, target.TypeC.__id__, "Owner");
-	a.deep(desc, { type: target.String, multiple: true }, "Data");
+	a.deep(desc, { type: target.PTypeB, multiple: true }, "Data");
 	a.deep(aFrom(target.TypeC.multiple), ['foo', 'bar'], "Value");
 
 	a.h2("Prototype properties");

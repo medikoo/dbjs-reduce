@@ -6,7 +6,8 @@ var Database   = require('dbjs')
   , StringLine = require('dbjs-ext/string/string-line')(db)
   , UsDollar   = require('dbjs-ext/number/currency/us-dollar')(db)
 
-  , defineTestProperties, TypeA, TypeB, TypeC, TypeD, user;
+  , defineTestProperties, TypeA, TypeB, TypeC, TypeD, PTypeA, PTypeB, PTypeAObj, PTypeC, PTypeCObj
+  , user;
 
 user = db.Object.extend('User').prototype;
 
@@ -14,6 +15,30 @@ TypeA = db.Object.extend('TypeA');
 TypeB = TypeA.extend('TypeB');
 TypeC = db.Object.extend('TypeC');
 TypeD = TypeC.extend('TypeD');
+PTypeA = db.String.extend('PTypeA');
+PTypeAObj = db.Object.extend('PTypeAObj', {
+	category: { type: PTypeA }
+});
+PTypeB = db.String.extend('PTypeB');
+PTypeC = db.String.extend('PTypeC');
+PTypeCObj = db.Object.extend('PTypeCObj', {
+	marko: { type: PTypeC }
+});
+
+PTypeB.defineProperties({
+	someNested: {
+		nested: true,
+		type: PTypeAObj
+	},
+	meta: {
+		nested: true,
+		type: db.Object
+	}
+});
+PTypeB.meta._descriptorPrototype_.setProperties({
+	type: PTypeCObj,
+	nested: true
+});
 
 defineTestProperties = function (obj) {
 	return obj.defineProperties({
@@ -97,7 +122,7 @@ TypeC.defineProperties({
 		reduceBase: true
 	},
 	multiple: {
-		type: db.String,
+		type: PTypeB,
 		multiple: true,
 		value: ['foo', 'bar']
 	}

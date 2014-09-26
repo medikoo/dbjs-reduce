@@ -119,6 +119,12 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 migrateProperties = function (source, targetDatabase, propertyName) {
 	var isFullCopy = !(source.master instanceof source.database.Object), sKey, desc, anyDefined;
 
+	if (source.__descriptorPrototype__.nested) {
+		if (migrateProperties(source.get(''), targetDatabase, propertyName)) {
+			anyDefined = true;
+			migrateProperty(source.__descriptorPrototype__, targetDatabase, propertyName);
+		}
+	}
 	for (sKey in source.__descriptors__) {
 		desc = source.__descriptors__[sKey];
 		if (desc.nested) {
