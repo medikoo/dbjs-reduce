@@ -128,8 +128,10 @@ migrateProperties = function (source, targetDatabase, propertyName) {
 			}
 			if (!isFullCopy) continue;
 		}
-		if (desc.object !== source) continue;
-		if (!isFullCopy && !desc.hasOwnProperty(propertyName)) continue;
+		if (!isFullCopy) {
+			if (desc.object !== source) continue;
+			if (!desc.hasOwnProperty(propertyName)) continue;
+		}
 		if (migrateProperty(desc, targetDatabase, propertyName)) anyDefined = true;
 	}
 	return anyDefined;
