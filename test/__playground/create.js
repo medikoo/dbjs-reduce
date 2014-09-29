@@ -39,6 +39,9 @@ PTypeB.meta._descriptorPrototype_.setProperties({
 	type: PTypeCObj,
 	nested: true
 });
+PTypeB.meta.get('foobar').setProperties({
+	marko: 'zagalo'
+});
 
 defineTestProperties = function (obj) {
 	return obj.defineProperties({

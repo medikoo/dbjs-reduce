@@ -131,6 +131,7 @@ module.exports = function (t, a) {
 	a(target.TypeD.__id__, 'TypeD', "TypeD");
 	a(target.PTypeA.__id__, 'PTypeA', "PTypeA");
 	a(target.PTypeC.__id__, 'PTypeC', "PTypeC");
+	a(target.PTypeB.meta.foobar.marko, 'zagalo');
 
 	a.h2("Constructor properties");
 	desc = target.TypeC.$get('regularValue');
