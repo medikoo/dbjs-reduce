@@ -109,6 +109,12 @@ defineTestProperties = function (obj) {
 			type: TypeD,
 			multiple: true,
 			reduceBase: 'foo'
+		},
+		statsMultipleObjComputed: {
+			type: TypeD,
+			multiple: true,
+			reduceBase: 'foo',
+			value: function () { return this.statsMultipleObj; }
 		}
 	});
 };

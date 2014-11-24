@@ -155,4 +155,14 @@ module.exports = function (t, a) {
 		stamp: stamp++,
 		value: true
 	});
+
+	a.h1("Computed changes: multiple objects");
+	sUserA.statsMultipleObj.delete(dObj1);
+	stamp = sUserA.statsMultipleObj.$get(dObj1)._lastOwnEvent_.stamp;
+	a.deep(toPlainEvent(tUserA.statsMultipleObjComputed.$get(target.objects.getById(dObj1.__id__))
+		._lastOwnEvent_), {
+		object: tUserA.statsMultipleObjComputed.$get(target.objects.getById(dObj1.__id__)).__id__,
+		stamp: stamp++,
+		value: undefined
+	});
 };

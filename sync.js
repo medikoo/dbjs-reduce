@@ -231,7 +231,7 @@ Object.defineProperties(SyncMaster.prototype, assign({
 		target.forEach(function (item) {
 			if (!source.has(item)) {
 				if (item.hasOwnProperty('__id__')) {
-					this.syncExternal(target.dbId, source.database.objects.getById(item.__id__),
+					this.syncExternal(target.dbId, source.object.database.objects.getById(item.__id__),
 						true, undefined);
 				}
 				propagateComputedItem.call(this, stamp++, target.dbId, undefined, item);
