@@ -229,10 +229,14 @@ Object.defineProperties(SyncMaster.prototype, assign({
 			if (event.stamp >= stamp) stamp = event.stamp + 1;
 		});
 		target.forEach(function (item) {
+			var sObj;
 			if (!source.has(item)) {
 				if (item.hasOwnProperty('__id__')) {
-					this.syncExternal(target.dbId, source.object.database.objects.getById(item.__id__),
-						true, undefined);
+					sObj = source.object.database.objects.getById(item.__id__);
+					if (!sObj) {
+						throw new TypeError("Could not find '" + item.__id__ + "' object in source database");
+					}
+					this.syncExternal(target.dbId, sObj, true, undefined);
 				}
 				propagateComputedItem.call(this, stamp++, target.dbId, undefined, item);
 			}
