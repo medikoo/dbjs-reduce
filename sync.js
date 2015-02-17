@@ -202,6 +202,7 @@ Object.defineProperties(SyncMaster.prototype, assign({
 		if (targetLastEvent && (targetLastEvent.stamp >= stamp)) stamp = targetLastEvent.stamp + 1;
 		new DbjsEvent(targetObject._getOwnDescriptor_(observable.__sKey__),
 			source, stamp); //jslint: ignore
+		target = targetObject._get_(observable.__sKey__);
 		if (source == null) {
 			if (target == null) return;
 		} else if (typeof source === typeof target) {
