@@ -84,10 +84,10 @@ module.exports = function (t, a) {
 	a.h1("Nested properties");
 	a.h2("Not Imported");
 	a.not(targetUser.$get('nested').object, targetUser);
-	a.not(targetUser.$get('nestedStatsBase').object, targetUser, "Marked");
 	a.not(targetUser.$get('nestedRich').object, targetUser, "Rich");
 
 	a.h2("Imported");
+	a(targetUser.nestedStatsBase instanceof target.Object, true, "Marked");
 	a(targetUser.statsNestedEmpty instanceof target.Object, true, "Nested empty");
 	testObject(targetUser.statsNested);
 	testObject(targetUser.statsNestedStatsBase);

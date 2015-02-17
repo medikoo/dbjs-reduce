@@ -119,18 +119,23 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 migrateProperties = function (source, targetDatabase, propertyName) {
 	var isFullCopy = !(source.master instanceof source.database.Object), sKey, desc, anyDefined, any;
 
-	if (source.__descriptorPrototype__.nested) {
+	desc = source.__descriptorPrototype__;
+	if (desc.nested) {
 		source.forEach(function (obj) {
 			any = true;
 			if (migrateProperties(obj, targetDatabase, propertyName)) anyDefined = true;
 		});
 		if (!any && migrateProperties(source.get(''), targetDatabase, propertyName)) anyDefined = true;
-		if (anyDefined) migrateProperty(source.__descriptorPrototype__, targetDatabase, propertyName);
+		if (anyDefined || desc.hasOwnProperty(propertyName)) {
+			migrateProperty(desc, targetDatabase, propertyName);
+			anyDefined = true;
+		}
 	}
 	for (sKey in source.__descriptors__) {
 		desc = source.__descriptors__[sKey];
 		if (desc.nested) {
-			if (migrateProperties(source.get(desc.key), targetDatabase, propertyName)) {
+			if (migrateProperties(source.get(desc.key), targetDatabase, propertyName) ||
+					desc.hasOwnProperty(propertyName)) {
 				anyDefined = true;
 				migrateProperty(desc, targetDatabase, propertyName);
 			}
