@@ -202,6 +202,16 @@ Object.defineProperties(SyncMaster.prototype, assign({
 		if (targetLastEvent && (targetLastEvent.stamp >= stamp)) stamp = targetLastEvent.stamp + 1;
 		new DbjsEvent(targetObject._getOwnDescriptor_(observable.__sKey__),
 			source, stamp); //jslint: ignore
+		if (source == null) {
+			if (target == null) return;
+		} else if (typeof source === typeof target) {
+			return;
+		}
+		throw new Error("Database synchronization error:\n" +
+			"\tComputed value (" + observable.dbId + ") in result database after propagation didn't" +
+			"match one in source\n" +
+			"\tMost likely it's source of model not being properly propagated\n" +
+			"(type of propagated value doesn't match defined type)");
 	}),
 	syncComputedSet: d(function (source, target, event) {
 		var sourceIterator, targetIterator, item, isDifferent, stamp;
@@ -245,6 +255,13 @@ Object.defineProperties(SyncMaster.prototype, assign({
 			if (item.hasOwnProperty('__id__')) this.syncExternal(target.dbId, item, true, true);
 			propagateComputedItem.call(this, stamp++, target.dbId, true, item);
 		}, this);
+		if (source.size !== target.size) {
+			throw new Error("Database synchronization error:\n" +
+				"\tComputed set (" + source.dbId + ") in result database after propagation didn't" +
+				"match one in source\n" +
+				"\tMost likely it's source of model not being properly propagated\n" +
+				"(type of propagated set values doesn't match defined type)");
+		}
 	}),
 	destroy: d(function () {
 		this.object.off('update', this.onDbEvent);
