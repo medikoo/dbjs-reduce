@@ -1,13 +1,11 @@
 'use strict';
 
-var forEach      = require('es5-ext/object/for-each')
-  , value        = require('es5-ext/object/valid-value')
-  , genStamp     = require('time-uuid/time')
-  , Database     = require('dbjs')
-  , DbjsEvent    = require('dbjs/_setup/event')
-  , validDbjs    = require('dbjs/valid-dbjs')
-  , isGetter     = require('dbjs/_setup/utils/is-getter')
-  , serializeKey = require('dbjs/_setup/serialize/key')
+var forEach   = require('es5-ext/object/for-each')
+  , value     = require('es5-ext/object/valid-value')
+  , Database  = require('dbjs')
+  , DbjsEvent = require('dbjs/_setup/event')
+  , validDbjs = require('dbjs/valid-dbjs')
+  , isGetter  = require('dbjs/_setup/utils/is-getter')
 
   , create = Object.create, getPrototypeOf = Object.getPrototypeOf
   , hasOwnProperty = Object.prototype.hasOwnProperty
@@ -42,7 +40,7 @@ migrateObject = function (obj, targetDatabase, propertyName) {
 };
 
 migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
-	var id = sourceDesc.__id__, hasInformation = false, value, sourceEvent, stamp;
+	var id = sourceDesc.__id__, hasInformation = false, value, sourceEvent;
 	if (targetDatabase._done_[id]) return hasInformation;
 	targetDatabase._done_[id] = true;
 	if (targetDatabase.objects.getById(id)) return hasInformation;
@@ -78,16 +76,7 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 				return hasInformation;
 			}
 			value = sourceDesc.object._get_(sourceDesc._sKey_);
-			if (sourceDesc.multiple) {
-				if (!value.size) return hasInformation;
-				sourceEvent = sourceDesc.object._getPropertyLastEvent_(sourceDesc._sKey_);
-				stamp = sourceEvent ? sourceEvent.stamp : genStamp();
-				value.forEach(function (value) {
-					new DbjsEvent(targetDatabase.objects.unserialize(sourceDesc.__valueId__ + '*' +
-						serializeKey(value)), true, stamp++); //jslint: ignore
-				});
-				return true;
-			}
+			if (sourceDesc.multiple) return hasInformation;
 			sourceEvent = sourceDesc._lastOwnEvent_;
 			new DbjsEvent(targetDatabase.objects.unserialize(sourceDesc.__valueId__), value,
 				(sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore

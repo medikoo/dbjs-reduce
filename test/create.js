@@ -65,7 +65,7 @@ module.exports = function (t, a) {
 		a(desc.object, obj, "Owner");
 		a(desc.hasOwnProperty('_value_') && desc._value_, undefined, "Desc Value");
 		a.deep(desc, { type: target.String, multiple: true }, "Data");
-		a.deep(aFrom(obj.statsMultipleComputed), ['foo', 'fooraz'], "Value");
+		a.deep(aFrom(obj.statsMultipleComputed), [], "Value");
 	};
 
 	a.h1("Direct properties");
