@@ -6,15 +6,27 @@ var aFrom    = require('es5-ext/array/from')
 
 module.exports = function (t, a) {
 	var target = createDb(source, 'reduceBase'), User = source.User
-	  , sUserA, tUserA, dObj1, dObj2, dObj3, handler, toPlainEvent, setProps, testProps, stamp;
+	  , sUserA, tUserA, dObj1, dObj2, dObj3, handler, setProps, testProps, stamp;
 
-	toPlainEvent = function (event, value, id) {
+	var toPlainEvent = function (event, value, id) {
 		if (!value) value = event.value;
 		if (value && value.hasOwnProperty('__id__')) value = value.__id__;
 		return {
 			object: id || event.object.__id__,
 			value: value,
-			stamp: event.stamp
+			stamp: event.stamp,
+			sourceId: event.sourceId,
+			index: event.index
+		};
+	};
+	var toPlainComputedEvent = function (event, value, id) {
+		if (!value) value = event.value;
+		if (value && value.hasOwnProperty('__id__')) value = value.__id__;
+		return {
+			object: id || event.object.__id__,
+			value: value,
+			stamp: event.stamp,
+			sourceId: event.sourceId
 		};
 	};
 
@@ -54,8 +66,8 @@ module.exports = function (t, a) {
 			toPlainEvent(sObj.$statsRegularValueStatsValue._lastOwnEvent_));
 
 		a(tObj.statsRegularComputed, 'markolorem');
-		a.deep(toPlainEvent(tObj.$statsRegularComputed._lastOwnEvent_),
-			toPlainEvent(sObj._getPropertyLastEvent_('statsRegularComputed'), 'markolorem',
+		a.deep(toPlainComputedEvent(tObj.$statsRegularComputed._lastOwnEvent_),
+			toPlainComputedEvent(sObj._getPropertyLastEvent_('statsRegularComputed'), 'markolorem',
 				sObj.$statsRegularComputed.__id__));
 
 		a(tObj.multiple, undefined);
@@ -68,20 +80,23 @@ module.exports = function (t, a) {
 			toPlainEvent(sObj.statsMultiple.$get(5)._lastOwnEvent_));
 
 		a.deep(aFrom(tObj.statsMultipleComputed), ['marko', 'markoraz', 'mienio']);
-		a.deep(toPlainEvent(tObj.statsMultipleComputed.$get('marko')._lastOwnEvent_), {
+		a.deep(toPlainComputedEvent(tObj.statsMultipleComputed.$get('marko')._lastOwnEvent_), {
 			object: tObj.statsMultipleComputed.$get('marko').__id__,
 			stamp: sObj.$statsRegular._lastOwnEvent_.stamp,
-			value: true
+			value: true,
+			sourceId: '0'
 		});
-		a.deep(toPlainEvent(tObj.statsMultipleComputed.$get('markoraz')._lastOwnEvent_), {
+		a.deep(toPlainComputedEvent(tObj.statsMultipleComputed.$get('markoraz')._lastOwnEvent_), {
 			object: tObj.statsMultipleComputed.$get('markoraz').__id__,
 			stamp: sObj.$statsRegular._lastOwnEvent_.stamp + 1,
-			value: true
+			value: true,
+			sourceId: '0'
 		});
-		a.deep(toPlainEvent(tObj.statsMultipleComputed.$get('mienio')._lastOwnEvent_), {
+		a.deep(toPlainComputedEvent(tObj.statsMultipleComputed.$get('mienio')._lastOwnEvent_), {
 			object: tObj.statsMultipleComputed.$get('mienio').__id__,
 			stamp: sObj.$statsRegular._lastOwnEvent_.stamp + 2,
-			value: true
+			value: true,
+			sourceId: '0'
 		});
 	};
 
@@ -114,45 +129,51 @@ module.exports = function (t, a) {
 	a.h1("Computed changes");
 	sUserA.regularValue = 'ilo';
 	a(tUserA.statsRegularComputed, 'ilolorem');
-	a.deep(toPlainEvent(tUserA.$statsRegularComputed._lastOwnEvent_),
-		toPlainEvent(sUserA._getPropertyLastEvent_('statsRegularComputed'), 'ilolorem',
+	a.deep(toPlainComputedEvent(tUserA.$statsRegularComputed._lastOwnEvent_),
+		toPlainComputedEvent(sUserA._getPropertyLastEvent_('statsRegularComputed'), 'ilolorem',
 			sUserA.$statsRegularComputed.__id__));
 	a.deep(aFrom(tUserA.statsMultipleComputed), ['ilo', 'iloraz', 'mienio']);
 	stamp = sUserA._getPropertyLastEvent_('statsRegularComputed').stamp;
 
-	a.deep(toPlainEvent(tUserA.statsMultipleComputed.$get('marko')._lastOwnEvent_), {
+	a.deep(toPlainComputedEvent(tUserA.statsMultipleComputed.$get('marko')._lastOwnEvent_), {
 		object: tUserA.statsMultipleComputed.$get('marko').__id__,
 		stamp: stamp++,
-		value: undefined
+		value: undefined,
+		sourceId: '0'
 	});
-	a.deep(toPlainEvent(tUserA.statsMultipleComputed.$get('markoraz')._lastOwnEvent_), {
+	a.deep(toPlainComputedEvent(tUserA.statsMultipleComputed.$get('markoraz')._lastOwnEvent_), {
 		object: tUserA.statsMultipleComputed.$get('markoraz').__id__,
 		stamp: stamp++,
-		value: undefined
+		value: undefined,
+		sourceId: '0'
 	});
-	a.deep(toPlainEvent(tUserA.statsMultipleComputed.$get('ilo')._lastOwnEvent_), {
+	a.deep(toPlainComputedEvent(tUserA.statsMultipleComputed.$get('ilo')._lastOwnEvent_), {
 		object: tUserA.statsMultipleComputed.$get('ilo').__id__,
 		stamp: stamp++,
-		value: true
+		value: true,
+		sourceId: '0'
 	});
-	a.deep(toPlainEvent(tUserA.statsMultipleComputed.$get('iloraz')._lastOwnEvent_), {
+	a.deep(toPlainComputedEvent(tUserA.statsMultipleComputed.$get('iloraz')._lastOwnEvent_), {
 		object: tUserA.statsMultipleComputed.$get('iloraz').__id__,
 		stamp: stamp++,
-		value: true
+		value: true,
+		sourceId: '0'
 	});
-	a.deep(toPlainEvent(tUserA.statsMultipleComputed.$get('mienio')._lastOwnEvent_), {
+	a.deep(toPlainComputedEvent(tUserA.statsMultipleComputed.$get('mienio')._lastOwnEvent_), {
 		object: tUserA.statsMultipleComputed.$get('mienio').__id__,
 		stamp: stamp++,
-		value: true
+		value: true,
+		sourceId: '0'
 	});
 
 	a.h1("Computed changes: multiple objects");
 	sUserA.statsMultipleObj.delete(dObj1);
 	stamp = sUserA.statsMultipleObj.$get(dObj1)._lastOwnEvent_.stamp;
-	a.deep(toPlainEvent(tUserA.statsMultipleObjComputed.$get(target.objects.getById(dObj1.__id__))
-		._lastOwnEvent_), {
+	a.deep(toPlainComputedEvent(tUserA.statsMultipleObjComputed
+		.$get(target.objects.getById(dObj1.__id__))._lastOwnEvent_), {
 		object: tUserA.statsMultipleObjComputed.$get(target.objects.getById(dObj1.__id__)).__id__,
 		stamp: stamp++,
-		value: undefined
+		value: undefined,
+		sourceId: '0'
 	});
 };

@@ -188,7 +188,7 @@ Object.defineProperties(SyncMaster.prototype, assign({
 		object = this.base.db.objects.unserialize(event.object.__valueId__, value);
 		targetEvent = object._lastOwnEvent_;
 		if (targetEvent && (targetEvent.stamp >= event.stamp)) return;
-		new DbjsEvent(object, value, event.stamp); //jslint: ignore
+		new DbjsEvent(object, value, event.stamp, event.sourceId, event.index); //jslint: ignore
 	}),
 	syncComputedValue: d(function (observable, event) {
 		var source = observable.value
@@ -201,7 +201,7 @@ Object.defineProperties(SyncMaster.prototype, assign({
 		targetLastEvent = targetObject._getOwnDescriptor_(observable.__sKey__)._lastOwnEvent_;
 		if (targetLastEvent && (targetLastEvent.stamp >= stamp)) stamp = targetLastEvent.stamp + 1;
 		new DbjsEvent(targetObject._getOwnDescriptor_(observable.__sKey__),
-			source, stamp); //jslint: ignore
+			source, stamp, event && event.sourceId); //jslint: ignore
 		target = targetObject._get_(observable.__sKey__);
 		if (source == null) {
 			if (target == null) return;
