@@ -33,7 +33,8 @@ migrateObject = function (obj, targetDatabase, propertyName) {
 	sourceEvent = obj._lastOwnEvent_;
 	if ((obj.master === obj) && (obj.constructor.prototype !== obj)) {
 		new DbjsEvent(targetObj = targetDatabase.objects.unserialize(obj.__id__, prototype),
-			prototype, (sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
+			prototype, (sourceEvent && sourceEvent.stamp) || 0,
+			sourceEvent && sourceEvent.sourceId, sourceEvent && sourceEvent.stamp); //jslint: ignore
 	}
 	migrateProperties(obj, targetDatabase, propertyName);
 	return targetObj;
@@ -66,7 +67,8 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 			}
 		}
 		new DbjsEvent(targetDatabase.objects.unserialize(subDesc.__id__), value,
-			(sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
+			(sourceEvent && sourceEvent.stamp) || 0,
+			sourceEvent && sourceEvent.sourceId, sourceEvent && sourceEvent.stamp); //jslint: ignore
 	});
 	if (sourceDesc._reverse_ || sourceDesc.nested) return hasInformation;
 	value = sourceDesc._resolveValueValue_();
@@ -79,7 +81,8 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 			if (sourceDesc.multiple) return hasInformation;
 			sourceEvent = sourceDesc._lastOwnEvent_;
 			new DbjsEvent(targetDatabase.objects.unserialize(sourceDesc.__valueId__), value,
-				(sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
+				(sourceEvent && sourceEvent.stamp) || 0,
+				sourceEvent && sourceEvent.sourceId, sourceEvent && sourceEvent.stamp); //jslint: ignore
 			return true;
 		}
 	} else if (sourceDesc.multiple) {
@@ -94,14 +97,16 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 			hasInformation = true;
 			sourceEvent = item._lastOwnEvent_;
 			new DbjsEvent(targetDatabase.objects.unserialize(item.__id__), item._value_,
-				(sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
+				(sourceEvent && sourceEvent.stamp) || 0,
+				sourceEvent && sourceEvent.sourceId, sourceEvent && sourceEvent.stamp); //jslint: ignore
 		}, this);
 		return hasInformation;
 	}
 	if (!sourceDesc.hasOwnProperty('_value_') || (value === undefined)) return hasInformation;
 	sourceEvent = sourceDesc._lastOwnEvent_;
 	new DbjsEvent(targetDatabase.objects.unserialize(sourceDesc.__valueId__), value,
-		(sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
+		(sourceEvent && sourceEvent.stamp) || 0,
+		sourceEvent && sourceEvent.sourceId, sourceEvent && sourceEvent.stamp); //jslint: ignore
 	return true;
 };
 
