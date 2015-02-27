@@ -8,7 +8,6 @@ var clear           = require('es5-ext/array/#/clear')
   , isSet           = require('es6-set/is-set')
   , d               = require('d')
   , autoBind        = require('d/auto-bind')
-  , genStamp        = require('time-uuid/time')
   , validDbjs       = require('dbjs/valid-dbjs')
   , DbjsEvent       = require('dbjs/_setup/event')
   , validDbjsObject = require('dbjs/valid-dbjs-object')
@@ -197,7 +196,7 @@ Object.defineProperties(SyncMaster.prototype, assign({
 		  , stamp, targetLastEvent;
 		if (source === target) return;
 		if (source && source.hasOwnProperty('__id__')) this.syncExternal(observable.dbId, source);
-		stamp = (event && event.stamp) || genStamp();
+		stamp = (event && event.stamp) || 0;
 		targetLastEvent = targetObject._getOwnDescriptor_(observable.__sKey__)._lastOwnEvent_;
 		if (targetLastEvent && (targetLastEvent.stamp >= stamp)) stamp = targetLastEvent.stamp + 1;
 		new DbjsEvent(targetObject._getOwnDescriptor_(observable.__sKey__),
@@ -233,7 +232,7 @@ Object.defineProperties(SyncMaster.prototype, assign({
 			if (targetIterator._destroy) targetIterator._destroy();
 			if (!isDifferent) return;
 		}
-		stamp = (event && event.stamp) || genStamp();
+		stamp = (event && event.stamp) || 0;
 		forEach(target.__setData__, function (item) {
 			var event = item._lastOwnEvent_;
 			if (!event) return;
