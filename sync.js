@@ -82,7 +82,7 @@ Object.defineProperties(SyncMaster.prototype, assign({
 		this.object.on('update', this.onDbEvent);
 	}),
 	syncProperties: d(function (object) {
-		var sKey, desc, baseDesc, observable;
+		var sKey, desc, baseDesc, observable, event;
 
 		for (sKey in object.__descriptors__) {
 			desc = object.__descriptors__[sKey];
@@ -115,9 +115,10 @@ Object.defineProperties(SyncMaster.prototype, assign({
 			// Computable
 			if (desc.multiple) {
 				this.observed.push(observable = object._get_(sKey));
-				this.syncComputedSet(observable,
-					resolveTargetValue(this.base.db, object.__id__, sKey),
-					object._getPropertyLastEvent_(sKey));
+				event = object._getPropertyLastEvent_(sKey);
+				this.groundComputedSet(observable, event);
+				this.syncComputedSet(observable, resolveTargetValue(this.base.db, object.__id__, sKey),
+					event);
 				observable.on('change', this.onSetChangeEvent);
 				continue;
 			}
@@ -212,6 +213,15 @@ Object.defineProperties(SyncMaster.prototype, assign({
 			"match one in source\n" +
 			"\tMost likely it's caused by model not being completely tagged for propagation\n" +
 			"\t(type of propagated value doesn't match defined type)");
+	}),
+	groundComputedSet: d(function (observable, event) {
+		var targetObject = resolveTargetObject(this.base.db, observable.object.__id__)
+		  , stamp, targetLastEvent, desc;
+		stamp = (event && event.stamp) || 0;
+		desc = targetObject._getOwnDescriptor_(observable.__sKey__);
+		targetLastEvent = desc._lastOwnEvent_;
+		if (targetLastEvent && (targetLastEvent.stamp >= stamp)) stamp = targetLastEvent.stamp + 1;
+		new DbjsEvent(desc, null, stamp, event && event.sourceId); //jslint: ignore
 	}),
 	syncComputedSet: d(function (source, target, event) {
 		var sourceIterator, targetIterator, item, isDifferent, stamp;

@@ -8,6 +8,9 @@ module.exports = function (t, a) {
 	var target = createDb(source, 'reduceBase'), User = source.User
 	  , sUserA, tUserA, dObj1, dObj2, dObj3, handler, setProps, testProps, stamp;
 
+	target.TypeC.prototype.statsMultipleComputed = function () {
+		return ['elo'];
+	};
 	var toPlainEvent = function (event, value, id) {
 		if (!value) value = event.value;
 		if (value && value.hasOwnProperty('__id__')) value = value.__id__;
