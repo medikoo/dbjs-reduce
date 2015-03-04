@@ -170,7 +170,7 @@ Object.defineProperties(SyncMaster.prototype, assign({
 		++this.descendants[id];
 	}),
 	syncEventDirectly: d(function (event) {
-		var value = event.value, object = event.object, targetEvent;
+		var value = event.value, object = event.object, targetEvent, constructor;
 		if (object._kind_ === 'descriptor') {
 			if (value && value.hasOwnProperty('__id__')) {
 				this.syncExternal(object.__valueId__, value);
@@ -183,9 +183,10 @@ Object.defineProperties(SyncMaster.prototype, assign({
 		} else if (object._kind_ === 'object') {
 			if (value && value.hasOwnProperty('__id__')) {
 				value = this.base.db.objects.getById(value.__id__);
+				if (value.constructor.prototype === value) constructor = value.constructor;
 			}
 		}
-		object = this.base.db.objects.unserialize(event.object.__valueId__, value);
+		object = this.base.db.objects.unserialize(event.object.__valueId__, constructor);
 		targetEvent = object._lastOwnEvent_;
 		if (targetEvent && (targetEvent.stamp >= event.stamp)) return;
 		new DbjsEvent(object, value, event.stamp, event.sourceId, event.index); //jslint: ignore
