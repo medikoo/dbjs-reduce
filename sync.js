@@ -91,7 +91,7 @@ Object.defineProperties(SyncMaster.prototype, assign({
 				this.syncProperties(object.get(desc.key));
 				continue;
 			}
-			if (desc[this.base.propertyName] === undefined) continue;
+			if (!desc[this.base.propertyName]) continue;
 			baseDesc = desc;
 			while (!baseDesc.hasOwnProperty(this.base.propertyName)) baseDesc = getPrototypeOf(baseDesc);
 			if (!baseDesc.master.isPrototypeOf(object.master)) continue;

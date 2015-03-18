@@ -120,7 +120,7 @@ migrateProperties = function (source, targetDatabase, propertyName) {
 			if (migrateProperties(obj, targetDatabase, propertyName)) anyDefined = true;
 		});
 		if (!any && migrateProperties(source.get(''), targetDatabase, propertyName)) anyDefined = true;
-		if (anyDefined || desc.hasOwnProperty(propertyName)) {
+		if (anyDefined || (desc.hasOwnProperty(propertyName) && desc[propertyName])) {
 			migrateProperty(desc, targetDatabase, propertyName);
 			anyDefined = true;
 		}
@@ -129,7 +129,7 @@ migrateProperties = function (source, targetDatabase, propertyName) {
 		desc = source.__descriptors__[sKey];
 		if (desc.nested) {
 			if (migrateProperties(source.get(desc.key), targetDatabase, propertyName) ||
-					desc.hasOwnProperty(propertyName)) {
+					(desc.hasOwnProperty(propertyName) && desc[propertyName])) {
 				anyDefined = true;
 				migrateProperty(desc, targetDatabase, propertyName);
 			}
@@ -137,7 +137,7 @@ migrateProperties = function (source, targetDatabase, propertyName) {
 		}
 		if (!isFullCopy) {
 			if (desc.object !== source) continue;
-			if (!desc.hasOwnProperty(propertyName)) continue;
+			if (!desc.hasOwnProperty(propertyName) || !desc[propertyName]) continue;
 		}
 		if (migrateProperty(desc, targetDatabase, propertyName)) anyDefined = true;
 	}
