@@ -88,7 +88,9 @@ Object.defineProperties(SyncMaster.prototype, assign({
 			desc = object.__descriptors__[sKey];
 			if (desc.reverse != null) continue;
 			if (desc.nested) {
-				this.syncProperties(object.get(desc.key));
+				if (object.hasOwnProperty('__objects__') && object.__objects__[desc._sKey_]) {
+					this.syncProperties(object.__objects__[desc._sKey_]);
+				}
 				continue;
 			}
 			if (!desc[this.base.propertyName]) continue;

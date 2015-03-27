@@ -120,6 +120,18 @@ defineTestProperties = function (obj) {
 };
 
 defineTestProperties(TypeA.prototype);
+TypeA.prototype.define('selfNested', {
+	type: TypeA,
+	nested: true
+});
+TypeA.prototype.define('openNested', {
+	type: db.Object,
+	nested: true
+});
+TypeA.prototype.openNested.define('deepSelfNested', {
+	type: TypeA,
+	nested: true
+});
 
 TypeC.defineProperties({
 	regularValue: {

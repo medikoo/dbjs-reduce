@@ -130,6 +130,7 @@ module.exports = function (t, a) {
 	a(target.UsDollar.__id__, 'UsDollar', "Parent type");
 	a(target.TypeD.__id__, 'TypeD', "TypeD");
 	a(target.PTypeA.__id__, 'PTypeA', "PTypeA");
+	a(target.PTypeCObj.__id__, 'PTypeCObj', "PTypeCObj");
 	a(target.PTypeC.__id__, 'PTypeC', "PTypeC");
 	a(target.PTypeB.meta.foobar.marko, 'zagalo');
 

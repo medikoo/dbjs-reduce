@@ -110,16 +110,21 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 	return true;
 };
 
-migrateProperties = function (source, targetDatabase, propertyName) {
-	var isFullCopy = !(source.master instanceof source.database.Object), sKey, desc, anyDefined, any;
-
+migrateProperties = function (source, targetDatabase, propertyName, realSource) {
+	var sKey, desc, anyDefined, any, hasMigrated, isFullCopy;
+	if (!realSource) realSource = source;
+	isFullCopy = !(realSource.master instanceof source.database.Object);
 	desc = source.__descriptorPrototype__;
 	if (desc.nested) {
-		source.forEach(function (obj) {
-			any = true;
-			if (migrateProperties(obj, targetDatabase, propertyName)) anyDefined = true;
-		});
-		if (!any && migrateProperties(source.get(''), targetDatabase, propertyName)) anyDefined = true;
+		if (source.hasOwnProperty('__objects__')) {
+			forEach(source.__objects__, function (obj) {
+				any = true;
+				if (migrateProperties(obj, targetDatabase, propertyName)) anyDefined = true;
+			});
+		}
+		if (!any && migrateProperties(desc.type.prototype, targetDatabase, propertyName, realSource)) {
+			anyDefined = true;
+		}
 		if (anyDefined || (desc.hasOwnProperty(propertyName) && desc[propertyName])) {
 			migrateProperty(desc, targetDatabase, propertyName);
 			anyDefined = true;
@@ -128,15 +133,22 @@ migrateProperties = function (source, targetDatabase, propertyName) {
 	for (sKey in source.__descriptors__) {
 		desc = source.__descriptors__[sKey];
 		if (desc.nested) {
-			if (migrateProperties(source.get(desc.key), targetDatabase, propertyName) ||
-					(desc.hasOwnProperty(propertyName) && desc[propertyName])) {
+			hasMigrated = false;
+			if (source.hasOwnProperty('__objects__') && source.__objects__[desc._sKey_]) {
+				hasMigrated = migrateProperties(source.__objects__[desc._sKey_],
+					targetDatabase, propertyName);
+			} else if (source.master !== desc.type.prototype) {
+				hasMigrated = migrateProperties(desc.type.prototype, targetDatabase,
+					propertyName, realSource);
+			}
+			if (hasMigrated || (desc.hasOwnProperty(propertyName) && desc[propertyName])) {
 				anyDefined = true;
 				migrateProperty(desc, targetDatabase, propertyName);
 			}
 			if (!isFullCopy) continue;
 		}
 		if (!isFullCopy) {
-			if (desc.object !== source) continue;
+			if (desc.object !== realSource) continue;
 			if (!desc.hasOwnProperty(propertyName) || !desc[propertyName]) continue;
 		}
 		if (migrateProperty(desc, targetDatabase, propertyName)) anyDefined = true;
