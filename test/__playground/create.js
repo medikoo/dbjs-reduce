@@ -124,6 +124,10 @@ TypeA.prototype.define('selfNested', {
 	type: TypeA,
 	nested: true
 });
+TypeA.prototype.define('selfNested2', {
+	type: TypeB,
+	nested: true
+});
 TypeA.prototype.define('openNested', {
 	type: db.Object,
 	nested: true

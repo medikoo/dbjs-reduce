@@ -137,7 +137,8 @@ migrateProperties = function (source, targetDatabase, propertyName, realSource) 
 			if (source.hasOwnProperty('__objects__') && source.__objects__[desc._sKey_]) {
 				hasMigrated = migrateProperties(source.__objects__[desc._sKey_],
 					targetDatabase, propertyName);
-			} else if (source.master !== desc.type.prototype) {
+			} else if ((source.master !== desc.type.prototype) &&
+					!desc.type.prototype.isPrototypeOf(source.master)) {
 				hasMigrated = migrateProperties(desc.type.prototype, targetDatabase,
 					propertyName, realSource);
 			}
