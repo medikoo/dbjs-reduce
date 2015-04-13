@@ -1,6 +1,7 @@
 'use strict';
 
 var clear           = require('es5-ext/array/#/clear')
+  , diff            = require('es5-ext/array/#/diff')
   , assign          = require('es5-ext/object/assign')
   , forEach         = require('es5-ext/object/for-each')
   , some            = require('es5-ext/object/some')
@@ -224,7 +225,7 @@ Object.defineProperties(SyncMaster.prototype, assign({
 		new DbjsEvent(desc, null, stamp, event && event.sourceId); //jslint: ignore
 	}),
 	syncComputedSet: d(function (source, target, event) {
-		var sourceIterator, targetIterator, item, isDifferent, stamp;
+		var sourceIterator, targetIterator, item, isDifferent, stamp, sourceKeys, targetKeys;
 
 		if (source.size === target.size) {
 			if (!source.size) return;
@@ -266,9 +267,15 @@ Object.defineProperties(SyncMaster.prototype, assign({
 			propagateComputedItem.call(this, stamp++, target.dbId, true, item);
 		}, this);
 		if (source.size !== target.size) {
+			sourceKeys = [];
+			targetKeys = [];
+			source.forEach(function (item) { sourceKeys.push(serializeKey(item)); });
+			target.forEach(function (item) { targetKeys.push(serializeKey(item)); });
 			throw new Error("Database reduction error:\n" +
-				"\tComputed set (" + source.dbId + ") in result database after propagation didn't " +
-				"match one in source\n" +
+				"\tComputed set (" + source.dbId + ") of size \"" + target.size +
+				"\" in result database after propagation didn't match one in source (size: \"" +
+				source.size + "\"\n" +
+				"\tKeys not found in target: " + diff.call(sourceKeys, targetKeys) + "\n" +
 				"\tMost likely it's caused by model not being completely tagged for propagation\n" +
 				"\t(type of propagated set values doesn't match defined type)");
 		}
