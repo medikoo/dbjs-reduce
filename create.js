@@ -74,9 +74,7 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 	value = sourceDesc._resolveValueValue_();
 	if (isGetter(value)) {
 		if (sourceDesc.master instanceof sourceDesc.database.Object) {
-			if (!sourceDesc.hasOwnProperty(propertyName) || !sourceDesc[propertyName]) {
-				return hasInformation;
-			}
+			if (!sourceDesc[propertyName]) return hasInformation;
 			value = sourceDesc.object._get_(sourceDesc._sKey_);
 			if (sourceDesc.multiple) return hasInformation;
 			sourceEvent = sourceDesc._lastOwnEvent_;
@@ -125,7 +123,7 @@ migrateProperties = function (source, targetDatabase, propertyName, realSource) 
 		if (!any && migrateProperties(desc.type.prototype, targetDatabase, propertyName, realSource)) {
 			anyDefined = true;
 		}
-		if (anyDefined || (desc.hasOwnProperty(propertyName) && desc[propertyName])) {
+		if (anyDefined || desc[propertyName]) {
 			migrateProperty(desc, targetDatabase, propertyName);
 			anyDefined = true;
 		}
@@ -142,7 +140,7 @@ migrateProperties = function (source, targetDatabase, propertyName, realSource) 
 				hasMigrated = migrateProperties(desc.type.prototype, targetDatabase,
 					propertyName, realSource);
 			}
-			if (hasMigrated || (desc.hasOwnProperty(propertyName) && desc[propertyName])) {
+			if (hasMigrated || desc[propertyName]) {
 				anyDefined = true;
 				migrateProperty(desc, targetDatabase, propertyName);
 			}
@@ -150,7 +148,7 @@ migrateProperties = function (source, targetDatabase, propertyName, realSource) 
 		}
 		if (!isFullCopy) {
 			if (desc.object !== realSource) continue;
-			if (!desc.hasOwnProperty(propertyName) || !desc[propertyName]) continue;
+			if (!desc[propertyName]) continue;
 		}
 		if (migrateProperty(desc, targetDatabase, propertyName)) anyDefined = true;
 	}

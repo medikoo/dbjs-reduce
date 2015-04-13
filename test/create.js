@@ -104,9 +104,9 @@ module.exports = function (t, a) {
 
 	a.h1("Nested bridge");
 	a.h2("Not Imported");
-	a(targetUser.nestedBridge, undefined, "Type with stats base");
-	a.not(targetUser.nestedBridgeStats.$get('statsRegular').object, targetUser.nestedBridgeStats,
-		"Non stats parent");
+	a(targetUser.nestedBridge instanceof target.TypeB, true, "Type with stats base");
+	a(targetUser.nestedBridgeStats.getDescriptor('statsRegular').required,
+		true, "Parent");
 
 	a.h2("Imported");
 	desc = targetUser.nestedBridgeStats.$get('bridgeRegularValue');

@@ -82,7 +82,7 @@ Object.defineProperties(SyncMaster.prototype, assign({
 		this.object.on('update', this.onDbEvent);
 	}),
 	syncProperties: d(function (object) {
-		var sKey, desc, baseDesc, observable, event;
+		var sKey, desc, observable, event;
 
 		for (sKey in object.__descriptors__) {
 			desc = object.__descriptors__[sKey];
@@ -94,9 +94,6 @@ Object.defineProperties(SyncMaster.prototype, assign({
 				continue;
 			}
 			if (!desc[this.base.propertyName]) continue;
-			baseDesc = desc;
-			while (!baseDesc.hasOwnProperty(this.base.propertyName)) baseDesc = getPrototypeOf(baseDesc);
-			if (!baseDesc.master.isPrototypeOf(object.master)) continue;
 
 			// Export!
 			if (!desc._resolveValueGetter_()) {

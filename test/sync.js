@@ -118,8 +118,8 @@ module.exports = function (t, a) {
 	testProps(target.objects.getById(dObj1.__id__), dObj1);
 
 	a.h1("Bridge");
-	a(tUserA.nestedBridge, undefined);
-	a(tUserA.nestedBridgeStats.statsRegularValue, 'foo');
+	a(tUserA.nestedBridge instanceof target.TypeB, true);
+	a(tUserA.nestedBridgeStats.statsRegularValue, sUserA.nestedBridgeStats.statsRegularValue);
 	a(tUserA.nestedBridgeStats.bridgeRegularValue, 40);
 	a(tUserA.nestedBridgeStats.bridgeRegularComputed, 'markomienio');
 
