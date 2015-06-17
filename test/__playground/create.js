@@ -120,17 +120,19 @@ defineTestProperties = function (obj) {
 };
 
 defineTestProperties(TypeA.prototype);
-TypeA.prototype.define('selfNested', {
-	type: TypeA,
-	nested: true
-});
-TypeA.prototype.define('selfNested2', {
-	type: TypeB,
-	nested: true
-});
-TypeA.prototype.define('openNested', {
-	type: db.Object,
-	nested: true
+TypeA.prototype.defineProperties({
+	selfNested: {
+		type: TypeA,
+		nested: true
+	},
+	selfNested2: {
+		type: TypeB,
+		nested: true
+	},
+	openNested: {
+		type: db.Object,
+		nested: true
+	}
 });
 TypeA.prototype.openNested.define('deepSelfNested', {
 	type: TypeA,
