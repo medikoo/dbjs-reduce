@@ -134,6 +134,17 @@ TypeA.prototype.defineProperties({
 		nested: true
 	}
 });
+db.Object.extend('NestedMapType');
+db.Object.extend('NestedMapContainerChild', {
+	nestedMap: {
+		type: db.Object,
+		nested: true
+	}
+});
+db.NestedMapContainerChild.prototype.nestedMap._descriptorPrototype_.type = db.NestedMapType;
+db.NestedMapContainerChild.prototype.nestedMap.define('someMapNestedObj',
+	{ nested: true, reduceBase: true });
+
 TypeA.prototype.openNested.define('deepSelfNested', {
 	type: TypeA,
 	nested: true

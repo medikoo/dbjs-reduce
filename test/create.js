@@ -163,4 +163,8 @@ module.exports = function (t, a) {
 	a(desc.object, target.TypeC.prototype, "Owner");
 	a(desc._value_, undefined, "Value");
 	a.deep(desc, { type: target.String }, "Data");
+
+	a.h1("Nested map");
+	a(target.NestedMapContainerChild.prototype.nestedMap.someMapNestedObj.constructor.__id__,
+		target.NestedMapType.__id__);
 };
