@@ -70,7 +70,7 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 			(sourceEvent && sourceEvent.stamp) || 0,
 			sourceEvent && sourceEvent.sourceId, sourceEvent && sourceEvent.stamp); //jslint: ignore
 	});
-	if (sourceDesc._reverse_ || sourceDesc.nested) return hasInformation;
+	if (sourceDesc._reverse_ || sourceDesc.nested || !sourceDesc._sKey_) return hasInformation;
 	value = sourceDesc._resolveValueValue_();
 	if (isGetter(value)) {
 		if (sourceDesc.master instanceof sourceDesc.database.Object) {
