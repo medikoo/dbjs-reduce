@@ -167,4 +167,8 @@ module.exports = function (t, a) {
 	a.h1("Nested map");
 	a(target.NestedMapContainerChild.prototype.nestedMap.someMapNestedObj.constructor.__id__,
 		target.NestedMapType.__id__);
+
+	a(target.NestedMapContainerChild2.prototype.nestedMap.get('whatever').constructor.__id__,
+		target.NestedMapType2.__id__);
+
 };
