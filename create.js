@@ -9,21 +9,32 @@ var forEach   = require('es5-ext/object/for-each')
 
   , create = Object.create, getPrototypeOf = Object.getPrototypeOf
   , hasOwnProperty = Object.prototype.hasOwnProperty
+  , bareDatabase = new Database()
   , migrateType, migrateObject, migrateProperty, migrateProperties;
 
-migrateType = function (type, targetDatabase, propertyName) {
+var createType = function (type, targetDatabase) {
 	var targetType = targetDatabase.objects.getById(type.__id__);
 	if (targetType) return targetType;
+	return createType(getPrototypeOf(type), targetDatabase)._extend_(type.__id__);
+};
+
+migrateType = function (type, targetDatabase, propertyName) {
+	var id = type.__id__, targetType;
+	if (targetDatabase._done_['@' + id]) return targetDatabase.objects.getById(id);
+	targetDatabase._done_['@' + id] = true;
+	if (bareDatabase.objects.getById(id)) return targetDatabase.objects.getById(id);
+	createType(type, targetDatabase);
 	migrateType(getPrototypeOf(type), targetDatabase, propertyName);
-	targetType = migrateObject(type, targetDatabase, propertyName);
+	targetType = migrateObject(type, targetDatabase, propertyName, true);
 	migrateProperties(type.prototype, targetDatabase, propertyName);
 	return targetType;
 };
 
 migrateObject = function (obj, targetDatabase, propertyName) {
-	var prototype, sourceEvent, targetObj;
-	targetObj = targetDatabase.objects.getById(obj.__id__);
-	if (targetObj) return targetObj;
+	var id = obj.__id__, prototype, sourceEvent, targetObj;
+	if (targetDatabase._done_[id]) return targetDatabase.objects.getById(id);
+	targetDatabase._done_[id] = true;
+	if (bareDatabase.objects.getById(id)) return targetDatabase.objects.getById(id);
 	prototype = migrateObject(getPrototypeOf(obj), targetDatabase, propertyName);
 	if (typeof obj !== 'function') migrateType(obj.constructor, targetDatabase, propertyName);
 	if (obj.object !== obj) {
