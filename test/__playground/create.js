@@ -145,16 +145,22 @@ db.NestedMapContainerChild.prototype.nestedMap._descriptorPrototype_.type = db.N
 db.NestedMapContainerChild.prototype.nestedMap.define('someMapNestedObj',
 	{ nested: true, reduceBase: true });
 
-db.Object.extend('NestedMapType2');
-db.Object.extend('NestedMapContainerChild2', {
-	nestedMap: {
+db.Object.extend('RealNestedMap', {
+	map: {
 		type: db.Object,
 		nested: true
 	}
 });
-db.NestedMapContainerChild2.prototype.nestedMap._descriptorPrototype_.setProperties({
-	type: db.NestedMapType2,
-	nested: true,
+db.RealNestedMap.prototype.map._descriptorPrototype_.setProperties({
+	type: db.Object,
+	nested: true
+});
+db.Object.extend('CustomNestedType');
+db.Object.extend('RealNestedMapContainer', {
+	nestedMap: { type: db.RealNestedMap, nested: true }
+});
+db.RealNestedMapContainer.prototype.nestedMap.map._descriptorPrototype_.setProperties({
+	type: db.CustomNestedType,
 	reduceBase: true
 });
 
