@@ -63,7 +63,7 @@ migrateProperty = function (sourceDesc, targetDatabase, propertyName) {
 		if (value instanceof sourceDesc.database.Base) {
 			value = targetDatabase.objects.getById(value.__id__);
 			if (!value) {
-				throw new TypeError("Could not migrate object of id: ", sourceDesc[key].__id__);
+				throw new TypeError("Could not migrate object of id: " + sourceDesc[key].__id__);
 			}
 		}
 		new DbjsEvent(targetDatabase.objects.unserialize(subDesc.__id__), value,
