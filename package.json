@@ -12,14 +12,14 @@
     "url": "git://github.com/medikoo/dbjs-reduce.git"
   },
   "dependencies": {
-    "es5-ext": "^0.10.10",
-    "es6-set": "0.1.3",
+    "es5-ext": "^0.10.11",
+    "es6-set": "0.1.4",
     "d": "1",
-    "dbjs": "git://github.com/medikoo/dbjs.git#a0b9178913a11e58fc9294b3cf13ec9c793003a4",
+    "dbjs": "git://github.com/medikoo/dbjs.git#36db8dc0f5bfa3affc758118009c9904d82ff936",
     "time-uuid": "1"
   },
   "devDependencies": {
-    "dbjs-ext": "git://github.com/medikoo/dbjs-ext.git#e9996c9d594c4c36859c913524b784b24489ac48",
+    "dbjs-ext": "git://github.com/medikoo/dbjs-ext.git#d83f1e333223414e397f1da7bae58cd1f49bb0e0",
     "tad": "^0.2.4",
     "xlint": "^0.2.2",
     "xlint-jslint-medikoo": "^0.1.4"
